@@ -1,0 +1,80 @@
+You will be given a text to analyze. Your task is to extract key sentences and numbers from this text, and present them in a specific JSON format.
+
+Your task is to analyze this text and extract the following elements:
+
+1. Key sentences: Important and complete sentences that convey significant information.
+   - Each sentence MUST be complete and MUST end with a period ('.').
+   - DO NOT include sentences or partial sentences separated by commas.
+   - Each sentence MUST be separated by a comma within the list.
+
+2. Key Numbers: Any number mentioned in the text (for example, dates, counts, statistics).
+   - Each value MUST be a plain JSON string. Do NOT add extra `"` characters inside the value itself — the JSON syntax already provides the surrounding quotes. WRONG: `"\"4.1\""` (the value contains literal quotes). RIGHT: `"4.1"` (JSON-encoded string whose value is `4.1`).
+   - If a number has a unit, include the unit in the SAME string (for example: `1.2 billion`, `3 million`, `5 percent`, `14000 dollars`). Use the EXACT form that appears in the article.
+   - Each entry MUST appear verbatim in the article text.
+
+To extract key sentences:
+- Read through the text carefully.
+- Identify sentences that contain important information or main ideas.
+- Ensure each sentence is complete and ends with a period.
+- Do not include partial sentences or phrases.
+
+To extract key numbers:
+- Scan the text for any numerical values.
+- Include dates, statistics, counts, or any other numerical information.
+- Remember to enclose each number (including any associated units) in double quotes.
+
+3. Number-to-sentence map: REQUIRED. For EVERY entry in key_numbers, add an entry
+   to `number_to_sentence_map` whose KEY is the EXACT SAME STRING used in
+   `key_numbers` (character-for-character — same form, same unit, no added quotes)
+   and whose VALUE is the verbatim sentence from the article containing it.
+   - The map MUST have one entry per element of key_numbers. NEVER return it empty
+     when key_numbers is non-empty.
+   - If a number appears in multiple sentences, pick the most informative one.
+   - If you cannot locate a sentence for some key_number, remove that number from
+     key_numbers rather than dropping the map entry.
+
+Your output should be a valid JSON object in the following format:
+
+<JSON>
+{
+ "key_sentences": ["<first complete sentence extracted from the input text.>", "<second complete sentence extracted from the input text.>"],
+ "key_numbers": ["<number_or_quantity_found_in_text_1>", "<number_or_quantity_found_in_text_2>"],
+ "number_to_sentence_map": {"<number_or_quantity_found_in_text_1>": "<exact sentence from article containing it>"}
+}
+</JSON>
+
+Strict constraints:
+- DO NOT forget commas (',') between list items.
+- Return only valid JSON. No explanation. No comments.
+- The list must be formatted correctly, otherwise the program will crash.
+- Do not include any text outside of the JSON object.
+- CRITICAL: Every string in key_numbers MUST appear verbatim (or near-verbatim) in the source text. Use `current_article` when present, otherwise `original_article`. Do NOT invent numbers. Do NOT copy placeholder examples from this prompt.
+- If the source text contains no numbers, return key_numbers as an empty list: [].
+
+
+## OBJECTIVE FIELD — HOW TO USE IT
+
+When the payload contains an "objective" field, it is your PRIMARY instruction.
+It overrides the general extraction guidelines above.
+The objective may ask you to extract MORE or FEWER sentences/numbers than usual,
+or to prefer sentences that are more or less representative of the full article.
+
+The payload may include these reference fields:
+- "previous_key_sentences" / "previous_key_numbers": what you extracted last round.
+  Do NOT copy them — use them only as a baseline to compare against when the
+  objective asks for MORE or FEWER.
+- "original_article": the REAL source article (round 0). Use it as the
+  semantic ground truth when the objective references it (e.g. "more coverage
+  of original_article").
+- "original_sentence_count" / "original_number_count": total sentences /
+  distinct numeric values in the REAL source article — denominators of the
+  compression-ratio metric. Hard upper bound.
+- "previous_sentence_count" / "previous_number_count": HOW MANY items you
+  returned last round (not cumulative). When the objective asks to increase /
+  decrease compression, compare your new list size against this number.
+
+IMPORTANT — SOURCE TEXT PRIORITY:
+- If the payload contains a "current_article" field, extract key_sentences and key_numbers
+  FROM "current_article". This is the actively modified article text.
+- "original_article" is provided only as background context when "current_article" is present.
+- If NO "current_article" field is present, extract from "original_article" as usual.

@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.bak*
+Output/
+Output_Swarm/
+dataset/
+detector/checkpoints/
+logs/
+*.log
+*.csv
+venv/
+hf_cache/

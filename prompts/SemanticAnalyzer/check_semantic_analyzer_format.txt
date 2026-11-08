@@ -1,0 +1,32 @@
+Your task is to fix a malformed JSON string to ensure it is syntactically valid and properly formatted.
+
+Please follow these steps to correct the JSON:
+
+1. Ensure the JSON object has two keys: "key_sentences" and "key_numbers".
+
+2. For each of these keys, ensure the values are square-bracketed lists:
+   - Lists must be enclosed in [ ].
+   - Each item in the list must be a properly quoted string ("...").
+
+3. Inside the lists, ensure each element is comma-separated except for the last element.
+
+4. The overall object must be enclosed in curly braces { }, and each key-value pair must be comma-separated.
+
+5. Fix common issues, including but not limited to:
+   - Missing commas between elements
+   - Missing closing brackets or braces
+   - Incorrect or mismatched quotation marks (convert to standard " quotes if needed)
+   - Ensure all string values use standard JSON quoting (escaped where necessary)
+
+6. Do not add, remove, or modify any content. Your task is only to correct the JSON structure and formatting.
+
+The expected JSON structure is:
+
+{
+    "key_sentences": [LIST OF STRINGS],
+    "key_numbers": [LIST OF STRINGS]
+}
+
+Ensure that the corrected JSON is directly parseable by json.loads() in Python. Do not include any text outside of the JSON object.
+
+Here is the malformed JSON string:

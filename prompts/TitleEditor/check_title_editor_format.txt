@@ -1,0 +1,24 @@
+Your task is to fix a malformed JSON string to ensure it is syntactically valid and properly formatted.
+
+Please follow these steps to correct the JSON:
+
+1. Ensure the JSON object has one key: "modified_title".
+
+2. The overall object must be enclosed in curly braces { }.
+
+3. Fix common issues, including but not limited to:
+   - Missing closing brackets or braces
+   - Incorrect or mismatched quotation marks (convert to standard " quotes if needed)
+   - Ensure all string values use standard JSON quoting (escaped where necessary)
+
+4. Do not add, remove, or modify any content. Your task is only to correct the JSON structure and formatting.
+
+The expected JSON structure is:
+
+{
+    "modified_title": "The title you assigned to the journalistic article here"
+}
+
+Ensure that the corrected JSON is directly parseable by json.loads() in Python. Do not include any text outside of the JSON object.
+
+Here is the malformed JSON string:
